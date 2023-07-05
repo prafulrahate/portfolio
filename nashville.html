@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<!--
+	Praful Rahate Portfolio website for Data Analytics
+-->
+<html>
+	<head>
+		<title>Nashville Housing Analysis - Praful Rahate</title>
+		<link rel="icon" href="images/logo.png" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Praful Rahate</strong> <span>Data Analyst</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+				<nav id="menu">
+					<ul class="links">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="aboutme.html">About Me</a></li>
+						<li><a href="projects.html">Projects</a></li>
+						<li><a href="contactme.html">Contact Me</a></li>
+						<li><a href="myspace/index.html">My Space</a></li>
+					</ul>
+					<ul class="actions stacked">
+						<li><a href="#" class="button primary fit">Get Started</a></li>
+						<li><a href="PrafulRahate_Resume.pdf" class="button fit">Resume</a></li>
+					</ul>
+				</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Nashville Housing Data Cleaning SQL Project</h1>
+									</header>
+									<span class="image main"><img src="images/head/housing.png" alt="" /></span>
+									<h3><p><b><i>Title: Cleaning the Nashville Housing Dataset: A Journey towards Reliable Insights</i></b></p></h3>
+										<p><b>Introduction</b></p>
+										<p> Data is the backbone of any analysis, but it often requires cleaning and preparation to unlock its true potential. In this blog post, we will explore how a data cleaning project transformed the Nashville Housing dataset, ensuring data accuracy and reliability. By addressing missing values, standardizing formats, splitting addresses, and removing duplicates, we created a robust foundation for extracting valuable insights from the dataset. </p>
+										
+										<p> <b>Understanding the Initial State</b></p>
+										<p> Our journey began by assessing the initial state of the Nashville Housing dataset. By examining the structure and column names, we gained insights into the dataset's composition and identified areas that needed improvement. </p>
+										
+<pre><code>Select *
+From PortfolioProject.dbo.NashvilleHousing
+</code></pre>
+<p>This query was used to assess the initial state of the dataset and understand its structure and column names.</p>
+
+										<p> <b>Standardizing Date Formats</b></p>
+										<p> To ensure consistent and accurate date information, we focused on standardizing the SaleDate column. By converting the column to a proper date format using SQL queries, we eliminated any variations in date representations. This not only improved data consistency but also facilitated easier analysis and comparisons based on time. </p>
+										
+<pre><code>Select SaleDate , Convert(Date,Saledate)
+From PortfolioProject.dbo.NashvilleHousing
+	
+Update NashvilleHousing
+Set SaleDate = Convert(Date,Saledate)
+	
+Alter Table NashvilleHousing
+Add SaleDateConverted Date;
+	
+Update NashvilleHousing
+Set SaleDateConverted = Convert(Date,Saledate)
+	
+Select SaleDateConverted , Convert(Date,Saledate)
+From PortfolioProject.dbo.NashvilleHousing
+</code></pre>
+<p>The above queries standardized the SaleDate column format by converting it to a proper date format. The SaleDateConverted column was added to store the standardized dates.</p>
+
+										<p> <b>Populating Missing Property Addresses</b></p>
+										<p> Missing property addresses can be a significant obstacle to drawing meaningful conclusions from housing data. To tackle this issue, we employed a clever strategy using the ParcelID and UniqueID columns. By comparing records with the same ParcelID but different UniqueIDs, we identified missing property addresses. Leveraging this information, we populated the empty address fields, enhancing the dataset's completeness and accuracy. </p>
+										
+<pre><code>SELECT a.ParcelID, a.PropertyAddress, b.ParcelID, b.PropertyAddress, 
+	ISNULL(a.PropertyAddress, b.PropertyAddress)
+FROM PortfolioProject.dbo.NashvilleHousing a
+JOIN PortfolioProject.dbo.NashvilleHousing b
+	ON a.ParcelID = b.ParcelID
+	AND a.[UniqueID] <> b.[UniqueID]
+WHERE a.PropertyAddress IS NULL;
+
+UPDATE a
+SET PropertyAddress = ISNULL(a.PropertyAddress, b.PropertyAddress)
+FROM PortfolioProject.dbo.NashvilleHousing a
+JOIN PortfolioProject.dbo.NashvilleHousing b
+	ON a.ParcelID = b.ParcelID
+	AND a.[UniqueID] <> b.[UniqueID]
+WHERE a.PropertyAddress IS NULL;</code></pre>
+
+<p>These queries identified and populated missing property addresses by leveraging the ParcelID and UniqueID columns for comparison and reference.</p>
+										<p> <b>Splitting Property and Owner Addresses</b></p>
+										<p> Next, we focused on breaking down the PropertyAddress and OwnerAddress columns into individual components. By splitting these addresses into separate columns such as Address, City, and State, we improved data organization and facilitated more granular analysis. This enabled us to delve deeper into specific regions, cities, or states within the dataset. </p>
+
+										<p>We can use both Substing and Parsename functions to split the string</p>
+										<p><i>Using Substring function, we will split PropertyAddress</i></p>
+<pre><code>ALTER TABLE NashvilleHousing
+ADD PropertySplitAddress nvarchar(255);
+	
+UPDATE NashvilleHousing
+SET PropertySplitAddress = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) - 1);
+	
+ALTER TABLE NashvilleHousing
+ADD PropertySplitCity nvarchar(255);
+
+UPDATE NashvilleHousing
+SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1, LEN(PropertyAddress));</code></pre>
+
+<p><i>Using Parsename function, we will split OwnerAddress</i></p>
+<pre><code>ALTER TABLE NashvilleHousing
+ADD OwnerSplitAddress nvarchar(255);
+
+UPDATE NashvilleHousing
+SET OwnerSplitAddress = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3);
+
+ALTER TABLE NashvilleHousing
+ADD OwnerSplitCity nvarchar(255);
+
+UPDATE NashvilleHousing
+SET OwnerSplitCity = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2);
+
+ALTER TABLE NashvilleHousing
+ADD OwnerSplitState nvarchar(255);
+
+UPDATE NashvilleHousing
+SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1);
+</code></pre>
+
+<p>The above queries split the PropertyAddress and OwnerAddress columns into individual address components such as Address, City, and State. The split components were stored in separate columns for better data organization.</p>
+
+										<p> <b>Standardizing "SoldAsVacant" Values</b></p>
+										<p> Inconsistencies in categorical values can hinder accurate analysis. In our dataset, the "SoldAsVacant" column contained variations such as "Y" and "N" instead of standardized "Yes" and "No" values. To rectify this, we updated the column using SQL queries, ensuring uniformity and clarity in the data. </p>
+										
+<pre><code>UPDATE NashvilleHousing
+SET SoldAsVacant = CASE
+	WHEN SoldAsVacant = 'Y' THEN 'Yes'
+	WHEN SoldAsVacant = 'N' THEN 'No'
+	ELSE SoldAsVacant
+	END;</code></pre>
+
+<p>This query standardized the values in the SoldAsVacant column by converting "Y" to "Yes" and "N" to "No".</p>	
+
+										<p> <b>Removing Duplicates</b></p>
+										<p> Duplicates can distort analysis results and skew insights. To ensure data integrity, we identified duplicate entries based on specific columns such as ParcelID, PropertyAddress, SalePrice, SaleDate, and LegalReference. Using SQL queries, we removed these duplicate records, leaving behind a dataset that accurately represented unique housing transactions. </p>
+										
+<pre><code>WITH RowNumCTE AS (
+    SELECT *,
+        ROW_NUMBER() OVER (
+            PARTITION BY ParcelID, PropertyAddress, SalePrice, SaleDate, LegalReference
+            ORDER BY UniqueId
+        ) row_num
+    FROM PortfolioProject.dbo.NashvilleHousing
+)
+DELETE
+FROM RowNumCTE
+WHERE row_num > 1;</code></pre>
+
+<p>The above query removed duplicate entries from the dataset based on specific columns, ensuring data uniqueness and integrity.</p>
+
+										<p> <b>Streamlining the Dataset</b></p>
+										<p> Unused columns can clutter a dataset and impede analysis. In our project, we identified and deleted unnecessary columns like OwnerAddress, TaxDistrict, PropertyAddress, and SaleDate. This streamlining process enhanced the dataset's clarity and focused our attention on the most relevant and meaningful information. </p>
+										
+<pre><code>ALTER TABLE PortfolioProject.dbo.NashvilleHousing
+DROP COLUMN OwnerAddress, TaxDistrict, PropertyAddress, SaleDate;</code></pre>
+
+<p>This query removed the unused columns, including OwnerAddress, TaxDistrict, PropertyAddress, and SaleDate, from the dataset, streamlining the data structure.</p>
+
+										<p> <b>Conclusion</b></p>
+										<p> Through meticulous data cleaning using SQL queries, we transformed the Nashville Housing dataset into a reliable and robust resource for analysis. By addressing missing values, standardizing formats, splitting addresses, changing values, removing duplicates, and streamlining the dataset, we ensured its accuracy and integrity. Now armed with clean and trustworthy data, we can confidently extract valuable insights into Nashville's housing market, empowering policymakers, real estate professionals, and analysts to make informed decisions. </p>
+										
+										<p> Data cleaning may not always be the most glamorous task, but it is a critical step in the data analysis process. It lays the foundation for accurate and reliable insights, enabling us to derive meaningful conclusions and drive impactful actions. As we move forward with our analysis of the Nashville Housing dataset, we can be confident that our results are based on a clean and trustworthy dataset. </p>
+										
+										<p>You can get the data and project files from my <a href="https://github.com/prafulrahate/PortfolioProjects">GitHub</a></p>
+
+										<ul class="actions">
+											<li><a href="projects.html" class="button next scrolly">See All Projects</a></li>
+										</ul>
+								
+								
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+				<section>
+					<div class="inner">
+						
+						<section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-envelope"></span>
+									<h3>Email</h3>
+									<a href="mailto:iamprafulrahate@gmail.com">iamprafulrahate@gmail.com</a>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-phone"></span>
+									<h3>Phone</h3>
+									<span>+1 (519) 729-6297</span>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-home"></span>
+									<h3>Address</h3>
+									<span>
+									Toronto, M4J3G3<br />
+									Canada</span>
+								</div>
+							</section>
+						</section>
+						<section>
+							<a href="contactme.html" class="button large">Contact Me</a>
+						</section>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+						<ul class="icons">
+							<li><a href="https://twitter.com/RahatePraful" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.facebook.com/prafulrahate340/" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="https://www.instagram.com/praful_rahate/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="https://github.com/prafulrahate" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="https://www.linkedin.com/in/praful-rahate/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; PrafulRahate</li>
+						</ul>
+					</div>
+				</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

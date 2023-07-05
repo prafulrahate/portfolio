@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<!--
+	Praful Rahate Portfolio website for Data Analytics
+-->
+<html>
+	<head>
+		<title>Covid-19 - Praful Rahate</title>
+		<link rel="icon" href="images/logo.png" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Praful Rahate</strong> <span>Data Analyst</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+				<nav id="menu">
+					<ul class="links">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="aboutme.html">About Me</a></li>
+						<li><a href="projects.html">Projects</a></li>
+						<li><a href="contactme.html">Contact Me</a></li>
+						<li><a href="myspace/index.html">My Space</a></li>
+					</ul>
+					<ul class="actions stacked">
+						<li><a href="#" class="button primary fit">Get Started</a></li>
+						<li><a href="PrafulRahate_Resume.pdf" class="button fit">Resume</a></li>
+					</ul>
+				</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Covid-19 Analysis with SQL</h1>
+									</header>
+									<p><i>The data for the analysis is from 1st Jan 2021 till 8th March 2023.</i></p>
+									<span class="image main"><img src="images/head/covid.png" alt="" /></span>
+									
+									<p><b>Summary of SQL Project for COVID-19: </b></p>
+									
+
+<p>The SQL project for COVID-19 involves analyzing data from the tables "CovidDeaths" and "CovidVaccinations" in the "PortfolioProject" database. The project aims to gain insights into the impact of the pandemic by examining various aspects such as cases, deaths, vaccinations, and population. </p>
+
+<p><b>1. COVID-19 Deaths Analysis: </b></p>
+<p>The project begins by analyzing COVID-19 deaths data. It retrieves data from the "CovidDeaths" table, focusing on the columns location, date, total cases, new cases, total deaths, and population. The results are ordered by location and date to provide a chronological view of the data. This analysis allows for understanding the total number of cases, deaths, and population for each location. </p>
+
+<pre><code>Select location, date, total_cases, new_cases, total_deaths, population
+	From PortfolioProject..CovidDeaths
+	Where continent is not null
+	Order by 1,2</code></pre>
+
+<p><b>2. Likelihood of Dying from COVID-19: </b></p>
+<p>The project further explores the relationship between total cases and total deaths by calculating the death percentage. It retrieves data for locations containing "canada" in their names and calculates the death percentage as (total deaths / total cases) * 100. The results are ordered by location and date, providing insights into the likelihood of dying from COVID-19 in different locations within Canada. </p>
+
+<pre><code>Select location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
+	From PortfolioProject..CovidDeaths
+	Where location Like '%canada%'
+	and continent is not null
+	Order by 1,2</code></pre>
+
+<p><b>3. Percentage of Population Infected: </b></p>
+<p>Next, the project focuses on the percentage of the population infected by COVID-19. It calculates the percentage of the population infected by dividing the total cases by the population and multiplying by 100. The results provide insights into the spread of the virus within different locations and are ordered by location and date. </p>
+
+<pre><code>Select location, date,  population, total_cases, (total_cases/population)*100 as PercentagePopulationInfected
+	From PortfolioProject..CovidDeaths
+	Order by 1,2</code></pre>
+
+<p><b>4. Highest Infection Rate Countries: </b></p>
+<p>The project identifies the countries with the highest infection rates by comparing the total cases to the population. It retrieves the location, population, and maximum total cases, as well as the corresponding percentage of the population infected. The results are grouped by location and ordered by the percentage of the population infected in descending order. </p>
+
+<pre><code>Select location,  population, Max(total_cases) as HighestInfectionCount, Max((total_cases/population)*100) as PercentagePopulationInfected
+	From PortfolioProject..CovidDeaths
+	Group by location,population
+	Order by PercentagePopulationInfected Desc</code></pre>
+
+<p><b>5. Countries with the Highest Death Count: </b></p>
+<p>The project focuses on countries with the highest death counts. It retrieves the location and maximum total deaths for each country, grouping the results by location and ordering them by the total death count in descending order. </p>
+
+<pre><code>Select location, Max(total_deaths) as TotalDeathCount
+	From PortfolioProject..CovidDeaths
+	Where continent is not null
+	Group by location
+	Order by TotalDeathCount Desc</code></pre>
+
+<p><b>6. Continents with the Highest Death Count: </b></p>
+<p>The project extends the analysis to continents, identifying the continents with the highest death counts. It retrieves the continent, location, and maximum total deaths for each continent, excluding entries related to income and union. The results are grouped by continent and ordered by the total death count in descending order. </p>
+
+<pre><code>Select location, Max(total_deaths) as TotalDeathCount
+	From PortfolioProject..CovidDeaths
+	Where continent is null
+	and Location not like '%income%'
+	and Location not like '%Union%'
+	Group by location
+	Order by TotalDeathCount Desc</code></pre>
+
+<p><b>7. Global COVID-19 Numbers: </b></p>
+<p>To gain insights into the global impact of COVID-19, the project provides global numbers by summing the new cases and new deaths. It also calculates the death percentage by dividing the new deaths by the new cases and multiplying by 100. The results are ordered by total deaths in each country. </p>
+
+<pre><code>Select Sum(new_cases) as total_cases, sum(new_deaths) as total_deaths, sum(new_deaths)/sum(cast(new_cases as int))*100 as DeathPercentage
+	From PortfolioProject..CovidDeaths
+	Where continent is not null
+	and new_cases not like '%0%'
+	Order by 1,2</code></pre>
+
+
+<p><b>8. COVID-19 Vaccinations Analysis: </b></p>
+<p>The project shifts its focus to COVID-19 vaccinations by analysing data from the "CovidVaccinations" table. It retrieves data for continents, locations, dates, populations, and new vaccinations. The project calculates the rolling number of people vaccinated by summing the new vaccinations for each location. The results provide insights into the progress of vaccinations across locations and are ordered by location and date. </p>
+
+<pre><code>Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+	, Sum(convert(float, vac.new_vaccinations)) over (Partition by dea.location Order by dea.location, dea.date) as RollingPeopleVaccinated
+	--, (RollingPeopleVaccinated/dea.population)*100
+	From PortfolioProject..CovidDeaths dea
+	Join PortfolioProject..CovidVaccinations vac
+		On dea.location = vac.location
+		and dea.date = vac.date
+	Where dea.continent is not null
+	order by 2,3</code></pre>
+
+<p><b>9. Percentage of Population Vaccinated: </b></p>
+<p>The project further explores the percentage of the population vaccinated by dividing the rolling number of people vaccinated by the population and multiplying by 100. The results are ordered by location and date, providing insights into the vaccination coverage in different locations. </p>
+
+<pre><code>--<b>Using CTE (Common Table Expression)</b>
+
+	With PopvsVac(Continent, Location, Date, Population, New_Vaccinations, RollingPeopleVaccinated)
+	as 
+	(
+	Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+	, Sum(convert(float, vac.new_vaccinations)) over (Partition by dea.location Order by dea.location, dea.date) as RollingPeopleVaccinated
+	From PortfolioProject..CovidDeaths dea
+	Join PortfolioProject..CovidVaccinations vac
+		On dea.location = vac.location
+		and dea.date = vac.date
+	Where dea.continent is not null
+	)
+	--Now to see the results
+	Select *, (RollingPeopleVaccinated/Population)*100
+	From PopvsVac
+	
+	
+	--<b>You can perform same using Temp Table</b>
+	Drop Table if exists #PercentPopulationVaccinated
+	Create Table #PercentPopulationVaccinated
+	(
+	Continent nvarchar(255),
+	Location nvarchar(255),
+	Date Datetime,
+	Population numeric,
+	New_Vaccination numeric,
+	RollingPeopleVaccinated numeric
+	)
+	Insert Into #PercentPopulationVaccinated
+	Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+	, Sum(convert(float, vac.new_vaccinations)) over (Partition by dea.location Order by dea.location, dea.date) as RollingPeopleVaccinated
+	From PortfolioProject..CovidDeaths dea
+	Join PortfolioProject..CovidVaccinations vac
+		On dea.location = vac.location
+		and dea.date = vac.date
+	
+	Select *, (RollingPeopleVaccinated/Population)*100 as PercentRollingPeopleVaccinated
+	From #PercentPopulationVaccinated
+	Where continent is not null
+	order by 2,3</code></pre>
+
+<p><b>10. Creating a View: </b></p>
+<p>Finally, the project creates a view named "PercentPopulationVaccinated" to store the data for visualization purposes. The view retrieves data similar to the previous analysis and can be accessed for further analysis or reporting. </p>
+
+<pre><code>Create View PercentPopulationVaccinated as
+	Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+	, Sum(convert(float, vac.new_vaccinations)) over (Partition by dea.location Order by dea.location, dea.date) as RollingPeopleVaccinated
+	From PortfolioProject..CovidDeaths dea
+	Join PortfolioProject..CovidVaccinations vac
+		On dea.location = vac.location
+		and dea.date = vac.date
+	Where dea.continent is not null
+	
+	
+	Select *
+	From PercentPopulationVaccinated
+	where RollingPeopleVaccinated is not null
+	order by location,date</code></pre>
+
+	<h3>Conclusion</h3>
+<p>Overall, this SQL project offers a comprehensive analysis of COVID-19 cases, deaths, and vaccinations. By combining data from different tables, the project provides insights into the impact of the pandemic on various geographic locations, populations, and vaccination efforts. The results can be used to support decision-making, policy formulation, and resource allocation to combat the ongoing COVID-19 crisis. </p>
+
+<p>You can get the data and project files from my <a href="https://github.com/prafulrahate/PortfolioProjects">GitHub</a></p>
+<ul class="actions">
+	<li><a href="projects.html" class="button next scrolly">See All Projects</a></li>
+</ul>
+
+
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+				<section>
+					<div class="inner">
+						
+						<section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-envelope"></span>
+									<h3>Email</h3>
+									<a href="mailto:iamprafulrahate@gmail.com">iamprafulrahate@gmail.com</a>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-phone"></span>
+									<h3>Phone</h3>
+									<span>+1 (519) 729-6297</span>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-home"></span>
+									<h3>Address</h3>
+									<span>
+									Toronto, M4J3G3<br />
+									Canada</span>
+								</div>
+							</section>
+						</section>
+						<section>
+							<a href="contactme.html" class="button large">Contact Me</a>
+						</section>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+						<ul class="icons">
+							<li><a href="https://twitter.com/RahatePraful" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.facebook.com/prafulrahate340/" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="https://www.instagram.com/praful_rahate/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="https://github.com/prafulrahate" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="https://www.linkedin.com/in/praful-rahate/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; PrafulRahate</li>
+						</ul>
+					</div>
+				</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<!--
+	Praful Rahate Portfolio website for Data Analytics
+-->
+<html>
+	<head>
+		<title>Digital Music Store Analysis - Praful Rahate</title>
+		<link rel="icon" href="images/logo.png" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Praful Rahate</strong> <span>Data Analyst</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+				<nav id="menu">
+					<ul class="links">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="aboutme.html">About Me</a></li>
+						<li><a href="projects.html">Projects</a></li>
+						<li><a href="contactme.html">Contact Me</a></li>
+						<li><a href="myspace/index.html">My Space</a></li>
+					</ul>
+					<ul class="actions stacked">
+						<li><a href="#" class="button primary fit">Get Started</a></li>
+						<li><a href="PrafulRahate_Resume.pdf" class="button fit">Resume</a></li>
+					</ul>
+				</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Digital Music Store Analysis</h1>
+									</header>
+									<span class="image main"><img src="images/head/video game.png" alt="" /></span>
+									<p> <b>Unveiling the Future of Music: A SQL Project for a Digital Music Store</b> </p>
+
+<p><b>Introduction: </b> </p>
+<p>In the digital age, music has become more accessible than ever before. With just a few clicks, we can explore a vast library of songs and albums, create personalized playlists, and enjoy our favourite tunes anytime, anywhere. Behind this seamless experience lies the powerful technology of a digital music store, which relies on robust databases and efficient data management. In this blog post, we'll delve into a SQL project that showcases the inner workings of a digital music store, highlighting its key features and the importance of SQL in managing and analysing vast amounts of music-related data. </p>
+
+<p><b>Database Structure: </b> </p>
+<p>The foundation of any digital music store lies in its well-designed database structure. A relational database management system (RDBMS) is employed to store and organize various entities related to music, such as artists, albums, songs, genres, and user information. The schema is carefully constructed using SQL, ensuring efficient data retrieval, scalability, and data integrity. </p>
+
+<p><b>Entity Relationships and Queries: </b> </p>
+<p>The digital music store relies on multiple entity relationships to provide a seamless user experience. SQL queries play a crucial role in fetching relevant data based on user requests. Let's explore some essential queries used in the project: </p>
+
+<p>1. Searching for Songs by Artist: Users can search for songs by their favourite artists. SQL queries with appropriate joins and filters help retrieve all songs associated with a specific artist or a group of artists, enabling users to explore their discography effortlessly. </p>
+
+<p>2. Building Dynamic Playlists: Playlists are a popular feature in digital music stores, allowing users to create personalized collections of songs. SQL queries with the proper aggregations and ordering facilitate the creation of dynamic playlists based on factors like genres, release dates, and user preferences. </p>
+
+<p>3. Recommending Similar Artists and Songs: Recommendation systems are crucial in enhancing the user experience and increasing engagement. By utilizing SQL queries that analyse user listening patterns, past purchases, and collaborative filtering techniques, the digital music store can suggest similar artists or songs to the users, fostering music discovery and customer satisfaction. </p>
+
+<p>4. Managing Inventory and Sales: Behind the scenes, SQL queries enable efficient inventory management and sales tracking. The digital music store can track the availability of albums, monitor sales volumes, and generate reports on top-selling artists or genres, facilitating data-driven decision-making. </p>
+
+<p><b>Entity Relationships and Queries: </b> </p>
+<p>The digital music store relies on multiple entity relationships to provide a seamless user experience.</p>
+
+<a href="images/musicstoredependency.png" class="image right"><img src="images/musicstoredependency.png" alt=""  /></a>
+<p>Digital Music Store sample database comprises:</p>
+<ul>
+	<li>11 tables</li>
+	<li>Various indexes, primary and foreign key constraints</li>
+	<li>More than 15,000 rows of data</li>
+	
+</ul>
+
+<p> SQL queries play a crucial role in fetching relevant data based on user requests. Let's explore some essential queries used in the project: </p>
+
+<p>The SQL project for the digital music store encompasses various queries that provide valuable insights and enhance the user experience. The queries are executed on the database structure of the digital music store, which includes tables such as Customers, Invoices, Employees, Artists, Albums, Tracks, and Genres. </p>
+
+<p>The first query retrieves customer information, including name, email, and the total amount spent, for customers who have made at least two purchases, excluding those from the USA. This query helps identify valuable customers and their spending patterns. </p>
+
+<pre><code>SELECT Cus.FirstName, Cus.LastName, Cus.Email, SUM(inv.Total) AS TotalAmountSpent
+	FROM DigitalMediaStore.dbo.Customers AS Cus
+	JOIN DigitalMediaStore.dbo.invoices AS inv 
+		ON Cus.CustomerId = inv.CustomerId
+	WHERE Cus.Country NOT LIKE '%usa%'
+	GROUP BY Cus.FirstName, Cus.LastName, Cus.Email
+	HAVING COUNT(*) >= 2;</code></pre>
+
+<p>The second query retrieves employee information, including first name, last name, and the number of customers they have assisted. The results are ordered by the number of customers assisted in descending order. This query allows evaluation of employee performance and identifies the top performers. </p>
+
+<pre><code>SELECT emp.FirstName, emp.LastName, COUNT(cus.CustomerId) AS NumberOfCustomersAssisted
+	FROM DigitalMediaStore.dbo.employees AS emp
+	LEFT JOIN DigitalMediaStore.dbo.customers AS cus
+		ON emp.EmployeeId = cus.SupportRepId
+	GROUP BY emp.EmployeeId, emp.FirstName, emp.LastName
+	ORDER BY NumberOfCustomersAssisted DESC;</code></pre>
+
+<p>The third query retrieves artist names and the total duration (in seconds) of all tracks for artists who have more than 50 tracks in the database. This query helps identify prolific artists and analyse their music catalogue. </p>
+
+<pre><code>SELECT art.Name AS ArtistName, SUM(cast(tra.Milliseconds as float))/1000 AS TotalDurationInSeconds
+	FROM DigitalMediaStore.dbo.artists AS art
+	JOIN DigitalMediaStore.dbo.albums AS alb 
+		ON art.ArtistId = alb.ArtistId
+	JOIN DigitalMediaStore.dbo.tracks AS tra 
+		ON alb.AlbumId = tra.AlbumId
+	GROUP BY art.ArtistId, art.Name
+	HAVING COUNT(tra.TrackId) > 50;</code></pre>
+
+<p>The fourth query retrieves track names, album titles, and composers for all tracks that are longer than the average duration of tracks in their respective albums. This query facilitates the identification of standout tracks within albums and highlights the creative contributions of composers. </p>
+
+<pre><code>SELECT tra.Name AS TrackName, alb.Title AS AlbumTitle, tra.Composer
+	FROM DigitalMediaStore.dbo.tracks AS tra
+	JOIN DigitalMediaStore.dbo.albums AS alb ON tra.AlbumId = alb.AlbumId
+	WHERE tra.Milliseconds > (
+		SELECT AVG(tra2.Milliseconds)
+		FROM DigitalMediaStore.dbo.tracks AS tra2
+		WHERE tra2.AlbumId = tra.AlbumId
+	)
+	ORDER BY alb.Title, tra.Name;</code></pre>
+
+<p>The fifth query retrieves album titles, track names, and genre names for tracks belonging to albums where the average track duration is longer than the average track duration of all albums in the database. Only tracks with durations longer than the average duration of their respective albums are included. This query helps identify albums with longer-than-average tracks and provides genre-specific insights. </p>
+
+<pre><code>SELECT alb.Title AS AlbumTitle, tra.Name AS TrackName, gen.Name AS GenreName
+	FROM DigitalMediaStore.dbo.tracks AS tra
+	JOIN DigitalMediaStore.dbo.albums AS alb ON tra.AlbumId = alb.AlbumId
+	JOIN DigitalMediaStore.dbo.genres AS gen ON tra.GenreId = gen.GenreId
+	WHERE tra.Milliseconds > (
+		SELECT AVG(tra2.Milliseconds)
+		FROM DigitalMediaStore.dbo.tracks AS tra2
+		WHERE tra2.AlbumId = tra.AlbumId
+	)
+	AND alb.AlbumId IN (
+		SELECT alb2.AlbumId
+		FROM DigitalMediaStore.dbo.tracks AS tra2
+		JOIN DigitalMediaStore.dbo.albums AS alb2 ON tra2.AlbumId = alb2.AlbumId
+		GROUP BY alb2.AlbumId
+		HAVING AVG(tra2.Milliseconds) > (
+			SELECT AVG(tra3.Milliseconds)
+			FROM DigitalMediaStore.dbo.tracks AS tra3
+		)
+	)
+	ORDER BY alb.Title, tra.Name;</code></pre>
+
+<p><b>Conclusion: </b></p>
+<p>The SQL project for a digital music store highlights the pivotal role of SQL in managing and analysing vast amounts of music-related data. From efficiently retrieving songs by artists to creating dynamic playlists, implementing recommendation systems, and gaining valuable insights into customer behaviour and employee performance, SQL queries enable seamless user experiences, facilitate data-driven decision-making, and ensure data security and scalability. This information can be utilized to optimize marketing strategies, improve user experiences, and make informed business decisions. With a well-designed database structure, robust data security measures, and scalable infrastructure, digital music stores can continue to revolutionize the way we access and enjoy music, enriching our lives in the process. </p>
+
+<p>You can get the data and project files from my <a href="https://github.com/prafulrahate/PortfolioProjects">GitHub</a></p>
+<ul class="actions">
+	<li><a href="projects.html" class="button next scrolly">See All Projects</a></li>
+</ul>
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+				<section>
+					<div class="inner">
+						
+						<section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-envelope"></span>
+									<h3>Email</h3>
+									<a href="mailto:iamprafulrahate@gmail.com">iamprafulrahate@gmail.com</a>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-phone"></span>
+									<h3>Phone</h3>
+									<span>+1 (519) 729-6297</span>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-home"></span>
+									<h3>Address</h3>
+									<span>
+									Toronto, M4J3G3<br />
+									Canada</span>
+								</div>
+							</section>
+						</section>
+						<section>
+							<a href="contactme.html" class="button large">Contact Me</a>
+						</section>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+						<ul class="icons">
+							<li><a href="https://twitter.com/RahatePraful" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.facebook.com/prafulrahate340/" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="https://www.instagram.com/praful_rahate/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="https://github.com/prafulrahate" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="https://www.linkedin.com/in/praful-rahate/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; PrafulRahate</li>
+						</ul>
+					</div>
+				</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
