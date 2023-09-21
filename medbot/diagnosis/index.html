@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title></title>
+</head>
+<body>
+&lt;!DOCTYPE html&gt;<br/>
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;<br/>
+<br/>
+&lt;head&gt;<br/>
+    &lt;title&gt;&lt;/title&gt;<br/>
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;symptom_selector/selector.css?v=1&quot;&gt;<br/>
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;symptom_selector/fontawesome/assets/css/font&ndash;awesome.min.css&quot; /&gt;<br/>
+    &lt;script src=&quot;libs/jquery&ndash;1.12.2.min.js&quot;&gt;&lt;/script&gt;<br/>
+    &lt;script src=&quot;libs/json2.js&quot;&gt;&lt;/script&gt;&lt;!&ndash;&ndash; json for ie7 &ndash;&ndash;&gt;<br/>
+    &lt;script src=&quot;libs/jquery.imagemapster.min.js?v=1.1&quot;&gt;&lt;/script&gt;<br/>
+    &lt;script src=&quot;libs/typeahead.bundle.js&quot;&gt;&lt;/script&gt;<br/>
+    <br/>
+    &lt;script src=&quot;symptom_selector/selector.js?v=3.3&quot;&gt;&lt;/script&gt;<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&lt;?php <br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;if ( !isset( $_SESSION[&#39;userToken&#39;]) || !isset( $_SESSION[&#39;tokenExpireTime&#39;]) || time() &gt;= $_SESSION[&#39;tokenExpireTime&#39;] )<br/>
+&nbsp;&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require &#39;token_generator.php&#39;;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$tokenGenerator = new TokenGenerator(&quot;n6TFa_GMAIL_COM_AUT&quot;,&quot;Pb9e3SFk6c2G4WqXx&quot;,&quot;https://authservice.priaid.ch/login&quot;);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$token = $tokenGenerator&ndash;&gt;loadToken();<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&#39;userToken&#39;] = $token&ndash;&gt;{&#39;Token&#39;};<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&#39;tokenExpireTime&#39;] = time() + $token&ndash;&gt;{&#39;ValidThrough&#39;};<br/>
+&nbsp;&nbsp;&nbsp;}<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;$token = $_SESSION[&#39;userToken&#39;];<br/>
+&nbsp;&nbsp;&nbsp;?&gt;<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&lt;script type=&quot;text/javascript&quot;&gt;<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var userToken = &lt;?php echo &quot;&#39;&quot;.$token.&quot;&#39;&quot; ?&gt;;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+        $(document).ready(function () {<br/>
+            $(&quot;#symptomSelector&quot;).symptomSelector(<br/>
+            {<br/>
+                mode: &quot;diagnosis&quot;,<br/>
+                webservice: &quot;https://healthservice.priaid.ch&quot;,<br/>
+                language: &quot;en&ndash;gb&quot;,<br/>
+                specUrl: &quot;sample_specialisation_page&quot;,<br/>
+                accessToken: userToken<br/>
+            });<br/>
+        });<br/>
+    &lt;/script&gt;<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<br/>
+&lt;/head&gt;<br/>
+&lt;body&gt;<br/>
+<br/>
+    &lt;table class=&quot;container&ndash;table&quot;&gt;<br/>
+        &lt;tr&gt;<br/>
+            &lt;td valign=&quot;middle&quot; colspan=&quot;2&quot; class=&quot;td&ndash;header box&ndash;white bordered&ndash;box width50&quot;&gt;&lt;h4 class=&quot;header&quot; id=&quot;selectSymptomsTitle&quot;&gt;&lt;span class=&quot;badge pull&ndash;left badge&ndash;primary visible&ndash;lg margin5R&quot;&gt;1&lt;/span&gt;&lt;/h4&gt;&lt;/td&gt;<br/>
+            &lt;td valign=&quot;middle&quot; class=&quot;td&ndash;header bordered&ndash;box box&ndash;white width25&quot;&gt;&lt;h4 class=&quot;header&quot; id=&quot;selectedSymptomsTitle&quot;&gt;&lt;span class=&quot;badge pull&ndash;left badge&ndash;primary visible&ndash;lg margin5R&quot;&gt;2&lt;/span&gt;&lt;/h4&gt;&lt;/td&gt;<br/>
+            &lt;td valign=&quot;middle&quot; class=&quot;td&ndash;header bordered&ndash;box box&ndash;white width25&quot;&gt;&lt;h4 class=&quot;header&quot; id=&quot;possibleDiseasesTitle&quot;&gt;&lt;span class=&quot;badge pull&ndash;left badge&ndash;primary visible&ndash;lg margin5R&quot;&gt;3&lt;/span&gt;&lt;/h4&gt;&lt;/td&gt;<br/>
+        &lt;/tr&gt;<br/>
+        &lt;tr&gt;<br/>
+            &lt;td valign=&quot;top&quot; class=&quot;selector_container bordered&ndash;box box&ndash;white width25&quot;&gt;&lt;div id=&quot;symptomSelector&quot;&gt;&lt;/div&gt;&lt;/td&gt;<br/>
+            &lt;td valign=&quot;top&quot; class=&quot;selector_container bordered&ndash;box box&ndash;white width25&quot;&gt;&lt;div id=&quot;symptomList&quot;&gt;&lt;/div&gt;&lt;/td&gt;<br/>
+            &lt;td valign=&quot;top&quot; class=&quot;selector_container bordered&ndash;box box&ndash;white width25&quot;&gt;&lt;div id=&quot;selectedSymptomList&quot;&gt;&lt;/div&gt;&lt;/td&gt;<br/>
+            &lt;td valign=&quot;top&quot; class=&quot;selector_container bordered&ndash;box box&ndash;white width25&quot;&gt;&lt;div id=&quot;diagnosisList&quot;&gt;&lt;/div&gt;&lt;/td&gt;<br/>
+        &lt;/tr&gt;<br/>
+    &lt;/table&gt;<br/>
+ <br/>
+&lt;/body&gt;<br/>
+&lt;/html&gt;</body></html>
