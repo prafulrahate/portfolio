@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<!--
+	Praful Rahate Portfolio website for Data Analytics
+-->
+<html>
+	<head>
+		<title>Encrypt - Praful Rahate</title>
+		<link rel="icon" href="images/logo.png" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Praful Rahate</strong> <span>Data Analyst</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+				<nav id="menu">
+					<ul class="links">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="aboutme.html">About Me</a></li>
+						<li><a href="projects.html">Projects</a></li>
+						<li><a href="contactme.html">Contact Me</a></li>
+						<li><a href="myspace/index.html">My Space</a></li>
+					</ul>
+					<ul class="actions stacked">
+						<li><a href="#" class="button primary fit">Get Started</a></li>
+						<li><a href="PrafulRahate_Resume.pdf" class="button fit">Resume</a></li>
+					</ul>
+				</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>CRYPT - Encryption & Decryption</h1>
+									</header>
+									<span class="image main"><img src="images/head/video game.png" alt="" /></span>
+									<p> <b>JAVA Servlet Application for Encryption and Decryption</b> </p>
+
+<p><b>Abstract: </b> </p>
+<p>Encryption and Decryption project is implemented in java platform. This application is used for providing security for data by converting normal data in to different format and transfer to end user where decryption algorithm is used to re-convert to correct format. Encryption and decryption algorithms are used in wireless communication networks, military, mailing, voice data…etc. Now a day’s every application uses different encryption methods. Gmail, yahoo mail use different encryption and decryption algorithms for providing security on mails. </p>
+In this project we study basic concepts of AES Algorithm, and its implementation methods. The Advanced Encryption Standard, or AES, is a symmetric block cipher chosen by the U.S. government to protect classified information and is implemented in software and hardware throughout the world to encrypt sensitive data.
+	 </p>
+
+<p><b>1. Introduction: </b> </p>
+<p>CRYPT is a service for securing text messages in an easy way. It could encrypt your message using strong encryption algorithms, so it will be more secure to send or store, than in plain text. Anyone who will get access to the encrypted message will be unable to read the original message without knowing your password.
+	</p>Most of our communication channels can be easily accessed by third-parties, not only government and your internet provider, but even by your friends and family (if we're talking about social networks or your personal computer).
+	</p>Using CRYPT, you could encrypt sensitive information with secure AES cipher, so nobody will get access to it without knowing the original password.
+	</p>
+
+<p><b>1.1 Java Cryptography Architecture: </b> </p>
+<p>The Java Cryptography Architecture (JCA) is the name for the internal design of the Java cryptography API.</p>
+JCA is structured around some central general purpose classes and interfaces. The real functionality behind these interfaces are provided by providers. Thus, you may use a Cipher class to encrypt and decrypt some data, but the concrete cipher implementation (encryption algorithm) depends on the concrete provider used.</p>
+You can implement and plugin your own providers too, but you should be careful with that. Implementing encryption correctly without security holes is hard! Unless you know what you are doing, you are probably better off using the built-in Java provider, or use a well-established provider like Bouncy Castle.
+</p>
+	
+<p><b>2. Background: </b> </p>
+<p>In this modern world, unauthorized persons are trying to mine data/view the data illegally.
+</p>This project will allow only authorized person to view the data who knows the secret key. So, unauthorized persons will be restricted to some extent. WE can learn and study how we can make our data more secure by learning basics of encryption and decryption. 
+</p>Encryption is the process of using mathematical algorithms to obscure the meaning of a piece of information so that only authorized parties can decipher it. It is used to protect our data (including texts, conversations ad voice), be it sitting on a computer or it being transmitted over the Internet. Encryption technologies are one of the essential elements of any secure computing environment.
+</p>The security of encryption lies in the ability of an algorithm to generate ciphertext (encrypted text) that is not easily reverted back to its original plaintext. The use of keys adds another level of security to methods of protecting our information. A key is a piece of information that allows only those that hold it to encode and decode a message.
+	</p>
+
+<p>There are two general categories of key based algorithms:</p>
+<ul>
+	<li><b>Symmetric encryption algorithms:</b> Symmetric algorithms use the same key for encryption and decryption. These algorithms, can either operate in block mode (which works on fixed-size blocks of data) or stream mode (which works on bits or bytes of data). They are commonly used for applications like data encryption, file encryption and encrypting transmitted data in communication networks (like TLS, emails, instant messages, etc.).</li>
+	<li><b>Asymmetric (or public key) encryption algorithms:</b> Unlike symmetric algorithms, which use the same key for both encryption and decryption operations, asymmetric algorithms use two separate keys for these two operations. These algorithms are used for computing digital signatures and key establishment protocols. </li>
+	
+</ul>
+
+<p><b>Apache Tomcat </b>(also referred to as Tomcat Server) implements several Java EE specifications including Java Servlet, JavaServer Pages (JSP), Java EL, and WebSocket, and provides a "pure Java" HTTP web server environment in which Javacode can run.
+	</p>Tomcat is developed and maintained by an open community of developers under the auspices of the Apache Software Foundation, released under the Apache License 2.0 license, and is open-source software.
+	</p>
+
+<p><b>3. Modules of CRYPT</b></p>
+<p><b>3.1 Design: High level Architecture</b></p>
+
+
+<a href="images/crypt1.png" class="image main"><img src="images/crypt1.png" alt=""  /></a>
+<P>Diagram 3.1: Architecture of text Encryption and Decryption </P>
+
+<a href="images/crypt2.png" class="image main"><img src="images/crypt2.png" alt=""  /></a>
+<p>Diagram 3.2: Understanding of Encryption and Decryption</p>
+
+<p><b>4. Source Code: </b> </p>
+
+<p>EncrytServelet.java generates the symmetric key using DES algorithm. Key size assigned here is 64 bits. It works only for the key size of 64 bits. 56 bits is mentioned in the coding remaining 8bits is accessed from inbuilt package. Encryption and decryption method is written based on DES algorithm. Message to encrypt can be given as input. Encrypted and decrypted text is displayed in message dialog.</p>
+
+<p><b>4.1 index.jsp code</b> </p>
+
+
+<a href="images/crypt3.png" class="image main"><img src="images/crypt3.png" alt=""  /></a>
+<p>When index.jsp file is called and executed it calls the doSubmit method and it gets redirect to EncrytServelet.java which is extended class of httpServlet. Java Servlet file is run which contains the encryption and decryption methods.</p>
+
+<p><b>4.2 EncrytServelet.java code</b> </p>
+
+<p></p>
+<a href="images/crypt4.png" class="image main"><img src="images/crypt4.png" alt=""  /></a>
+<a href="images/crypt5.png" class="image main"><img src="images/crypt5.png" alt=""  /></a>
+<a href="images/crypt6.png" class="image fit"><img src="images/crypt6.png" alt=""  /></a>
+
+
+<p><b>public abstract void service(ServletRequest request, ServletResponse response)</b> provides service for the incoming request. It is invoked at each time when user requests for a servlet. </p>
+	The input from index.jsp file is send as input to java file by -</p>
+	 userInput = req.getParameter("UserText");</p>
+	<b>getParameter()</b> − You call request.getParameter() method to get the value of a form parameter.</p>
+	The <b>Java Cipher</b> (javax.crypto.Cipher) class represents an encryption algorithm. The term Cipher is standard term for an encryption algorithm in the world of cryptography. That is why the Java class is called Cipher.</p>
+	You create a Cipherinstance by calling its getInstance() method with a parameter telling what type of encryption algorithm you want to use.</p>
+	ecipher = Cipher.getInstance("AES");</p>
+	This example creates a Cipher instance using the encryption algorithm called AES.</p>
+	You can store the user information into the session object by using setAttribute() method and later when needed this information can be fetched from the session.</p>
+	
+</p>
+
+<p>RequestDispatcher dispatcher = req.getRequestDispatcher("Result.jsp"); </p>
+	dispatcher.forward(req, resp);</p>
+	RequestDispatcher receives requests from the client and sends them to a resource (such as a servlet, HTML file, JSP file, FreeMarker or Thymeleaf template) on the server.</p>
+	RequestDispatcher has two methods:</p>
+	<ul>
+		<li>forward() — forwards a request from a servlet to another resource</li>
+		<li>•	include() — includes the content of a resource in the response</li>
+	</ul>
+
+	<p><b>4.3 Result.jsp source code </b> </p>
+	<a href="images/crypt7.png" class="image fit"><img src="images/crypt7.png" alt=""  /></a>
+
+<p><b>4.4 Run the Program</b></p>
+	<p>	To begin the testing, right click on the project, click on “Run as”, then select the option “Server”. The Apache Tomcat server will get start and the program will start executing. Alternately, you can call the java application by calling on any web browser by first turning on the Apache Tomcat server and then putting the link as follow - http://localhost:8080/MyWebApp/  in your localhost</p>
+
+	<p><b>5. Result</b></p>
+	<p><b>5.1 Home Page</b></p>
+<p>In the home page of the Java Servlet application you will see a text box in which we have to input our string that we want to encrypt. </p>
+<a href="images/crypt8.png" class="image fit"><img src="images/crypt8.png" alt=""  /></a>
+
+<p>When we clink on the submit button, we get redirect to the Result.jsp page in  which we can see the original string, encrypted and decrypted data of input string.</p>
+
+<p><b>5.2 doSubmit Page</b></p>
+<a href="images/crypt9.png" class="image fit"><img src="images/crypt9.png" alt=""  /></a>
+
+<p>In between the index.jsp and Result.jsp , the working of Java servlet takes place.</p>
+
+<p><b>6. Conclusion</b></p>
+
+<p>As we studied the implementation of Encryption and Decryption, we can say that security in the Internet is improving. Extension of the basic technologies to protect multicast communications is possible and can be expected to be deployed as multicast becomes more widespread.</p>
+Control over routing remains the basic tool for controlling access to streams. Implementing particular policies will be possible as multicast routing protocols improve. Cryptography is a tool which may alleviate many of the perceived problems of using the Internet for communications. However, cryptography requires the safe implementation of complex mathematical equations and protocols, and there are always worries about bad implementations. A further worry is that users are integral to securing communications, since they must provide appropriate keys.</p>
+	Cryptography may be groovy technology, but since security is a human issue, cryptography is only as good as the practices of the people who use it. The complexity of cryptography effectively puts it outside the understanding of most people and so motivation for the practices of cryptographic security is not available.</p>
+	</p>
+
+<p>You can get the data and project files from my <a href="https://github.com/prafulrahate/PortfolioProjects">GitHub</a></p>
+<ul class="actions">
+	<li><a href="projects.html" class="button next scrolly">See All Projects</a></li>
+</ul>
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+				<section>
+					<div class="inner">
+						
+						<section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-envelope"></span>
+									<h3>Email</h3>
+									<a href="mailto:iamprafulrahate@gmail.com">iamprafulrahate@gmail.com</a>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-phone"></span>
+									<h3>Phone</h3>
+									<span>+1 (519) 729-6297</span>
+								</div>
+							</section>
+							<section>
+								<div class="contact-method">
+									<span class="icon solid alt fa-home"></span>
+									<h3>Address</h3>
+									<span>
+									Toronto, M4J3G3<br />
+									Canada</span>
+								</div>
+							</section>
+						</section>
+						<section>
+							<a href="contactme.html" class="button large">Contact Me</a>
+						</section>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+						<ul class="icons">
+							<li><a href="https://twitter.com/RahatePraful" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.facebook.com/prafulrahate340/" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="https://www.instagram.com/praful_rahate/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="https://github.com/prafulrahate" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="https://www.linkedin.com/in/praful-rahate/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; PrafulRahate</li>
+						</ul>
+					</div>
+				</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
